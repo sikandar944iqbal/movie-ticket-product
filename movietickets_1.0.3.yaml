@@ -1,0 +1,390 @@
+swagger: "2.0"
+info:
+  title: MovieTickets
+  x-ibm-name: movietickets
+  version: 1.0.3
+host: $(catalog.host)
+schemes:
+- https
+basePath: /
+produces:
+- application/json
+consumes:
+- application/json
+security:
+- oauthconsumer:
+  - consumer
+securityDefinitions:
+  oauthuser:
+    type: oauth2
+    flow: application
+    x-ibm-oauth-provider: oauth-provider
+    tokenUrl: https://$(catalog.url)/rest/api/oauth-provider/oauth2/token
+    scopes:
+      user: Default Scope
+      admin: ""
+      consumer: ""
+      merchant: ""
+      operator: ""
+  oauthconsumer:
+    type: oauth2
+    flow: password
+    x-ibm-oauth-provider: oauth-provider
+    tokenUrl: https://$(catalog.url)/rest/api/oauth-provider/oauth2/token
+    scopes:
+      consumer: ""
+x-ibm-configuration:
+  gateway: datapower-api-gateway
+  type: rest
+  phase: realized
+  enforced: true
+  testable: true
+  assembly:
+    execute:
+    - gatewayscript:
+        version: 2.0.0
+        title: gatewayscript
+        source: context.message.header.set('x-user-metadata',context.get('oauth.verified_access_token.misc_info'));
+    - invoke:
+        title: invoke
+        version: 2.0.0
+        verb: keep
+        target-url: $(target-url)$(request.path)
+        follow-redirects: false
+        timeout: 60
+        parameter-control:
+          type: blacklist
+          values: []
+        header-control:
+          type: blacklist
+          values: []
+        inject-proxy-headers: true
+  properties:
+    target-url:
+      value: http://marketplace-microservice.m11s:3000
+      description: The URL of the target service
+      encoded: false
+  activity-log:
+    enabled: true
+    error-content: header
+    success-content: activity
+  application-authentication:
+    certificate: false
+  catalogs: {}
+  cors:
+    enabled: true
+tags:
+- name: MovieTickets
+definitions: {}
+paths:
+  /rest/api/v1/marketplace/tickets/movies/userMovieInfoById:
+    post:
+      summary: ""
+      operationId: post-rest-api-v1-marketplace-tickets-movies-widget-userMovieInfoById
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      parameters:
+      - name: Accept-Language
+        in: header
+        required: false
+        description: Describe which language you prefer to get back the response in
+          , current possible values are "en" or "ur" for English and Urdu
+        type: string
+      - name: X-APP-TYPE
+        in: header
+        required: true
+        type: string
+      - name: X-APP-VERSION
+        in: header
+        required: true
+        description: Describes application version 1.0.1.
+        type: string
+      - name: X-IBM-CLIENT-ID
+        in: header
+        required: true
+        description: Client credentials required for API Connect
+        type: string
+      - name: X-DEVICE-ID
+        in: header
+        required: true
+        description: Describes device ID XDFSD23345435.
+        type: string
+      - name: X-IP-ADDRESS
+        in: header
+        required: true
+        description: Describes IP Address of the device.
+        type: string
+      - name: X-CHANNEL
+        in: header
+        required: true
+        description: Describes channel code
+        type: string
+      - name: X-MSISDN
+        in: header
+        required: true
+        description: Client credentials required for API Connect
+        type: string
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+      tags:
+      - MovieTickets
+      description: Returns user movie info by ID for easy ticket session
+      security:
+      - oauthconsumer:
+        - consumer
+      consumes: []
+      produces: []
+  /rest/api/v1/marketplace/tickets/movies/payment:
+    post:
+      summary: ""
+      operationId: post-rest-api-v1-marketplace-tickets-movies-widget-payment
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      parameters:
+      - name: Accept-Language
+        in: header
+        required: false
+        description: Describe which language you prefer to get back the response in
+          , current possible values are "en" or "ur" for English and Urdu
+        type: string
+      - name: X-APP-TYPE
+        in: header
+        required: true
+        type: string
+      - name: X-APP-VERSION
+        in: header
+        required: true
+        description: Describes application version 1.0.1.
+        type: string
+      - name: X-IBM-CLIENT-ID
+        in: header
+        required: true
+        description: Client credentials required for API Connect
+        type: string
+      - name: X-DEVICE-ID
+        in: header
+        required: true
+        description: Describes device ID XDFSD23345435.
+        type: string
+      - name: X-IP-ADDRESS
+        in: header
+        required: true
+        description: Describes IP Address of the device.
+        type: string
+      - name: X-CHANNEL
+        in: header
+        required: true
+        description: Describes channel code
+        type: string
+      - name: X-MSISDN
+        in: header
+        required: true
+        description: Client credentials required for API Connect
+        type: string
+      - name: X-MPIN
+        in: header
+        required: true
+        description: Client credentials required for API Connect
+        type: string
+      - name: body
+        in: body
+        required: false
+        schema:
+          type: object
+      tags:
+      - MovieTickets
+      description: movie ticket payment
+      security:
+      - oauthconsumer:
+        - consumer
+      consumes: []
+      produces: []
+  /rest/api/v1/marketplace/tickets/movies/userMovieInfo:
+    get:
+      summary: ""
+      operationId: post-rest-api-v1-marketplace-tickets-movies-widget-userMovieInfo
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      parameters:
+      - name: Accept-Language
+        in: header
+        required: false
+        description: Describe which language you prefer to get back the response in
+          , current possible values are "en" or "ur" for English and Urdu
+        type: string
+      - name: X-APP-TYPE
+        in: header
+        required: true
+        type: string
+      - name: X-APP-VERSION
+        in: header
+        required: true
+        description: Describes application version 1.0.1.
+        type: string
+      - name: X-IBM-CLIENT-ID
+        in: header
+        required: true
+        description: Client credentials required for API Connect
+        type: string
+      - name: X-DEVICE-ID
+        in: header
+        required: true
+        description: Describes device ID XDFSD23345435.
+        type: string
+      - name: X-IP-ADDRESS
+        in: header
+        required: true
+        description: Describes IP Address of the device.
+        type: string
+      - name: X-CHANNEL
+        in: header
+        required: true
+        description: Describes channel code
+        type: string
+      - name: X-MSISDN
+        in: header
+        required: true
+        description: Client credentials required for API Connect
+        type: string
+      - name: body
+        in: body
+        required: false
+        schema:
+          type: object
+      tags:
+      - MovieTickets
+      description: Returns user all movie info for easy ticket session
+      security:
+      - oauthconsumer:
+        - consumer
+      consumes: []
+      produces: []
+  /rest/api/v1/marketplace/tickets/movies/notification:
+    post:
+      summary: ""
+      operationId: post-rest-api-v1-marketplace-tickets-movies-widget-notification
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      parameters:
+      - name: body
+        in: body
+        required: false
+        schema:
+          type: object
+      tags:
+      - MovieTickets
+      description: Send Push Notification for movie ticket payment
+      security:
+      - oauthuser:
+        - user
+      consumes: []
+      produces: []
+  /rest/api/v1/marketplace/tickets/movies/userinfo:
+    post:
+      summary: ""
+      operationId: post-rest-api-v1-marketplace-tickets-movies-widget-userinfo
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      parameters:
+      - name: body
+        in: body
+        required: false
+        schema:
+          type: object
+      tags:
+      - MovieTickets
+      description: Returns user info for easy ticket session
+      security:
+      - oauthuser:
+        - user
+      consumes: []
+      produces: []
+  /rest/api/v1/marketplace/tickets/movies/widget:
+    post:
+      tags:
+      - MovieTickets
+      parameters:
+      - name: Accept-Language
+        in: header
+        required: false
+        description: Describe which language you prefer to get back the response in
+          , current possible values are "en" or "ur" for English and Urdu
+        type: string
+      - name: X-APP-TYPE
+        in: header
+        required: true
+        type: string
+      - name: X-APP-VERSION
+        in: header
+        required: true
+        description: Describes application version 1.0.1.
+        type: string
+      - name: X-IBM-CLIENT-ID
+        in: header
+        required: true
+        description: Client credentials required for API Connect
+        type: string
+      - name: X-DEVICE-ID
+        in: header
+        required: true
+        description: Describes device ID XDFSD23345435.
+        type: string
+      - name: X-IP-ADDRESS
+        in: header
+        required: true
+        description: Describes IP Address of the device.
+        type: string
+      - name: X-CHANNEL
+        in: header
+        required: true
+        description: Describes channel code
+        type: string
+      - name: X-MSISDN
+        in: header
+        required: true
+        description: Client credentials required for API Connect
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          description: ""
+          type: object
+          properties:
+            latitude:
+              type: number
+            longitude:
+              type: number
+          required:
+          - latitude
+          - longitude
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      summary: ""
+      description: Returns widget session URL for mobile user
+      security:
+      - oauthconsumer:
+        - consumer
+      consumes: []
+      produces: []
