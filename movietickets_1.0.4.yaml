@@ -2,7 +2,7 @@ swagger: "2.0"
 info:
   title: MovieTickets
   x-ibm-name: movietickets
-  version: 1.0.3
+  version: 1.0.4
 host: $(catalog.host)
 schemes:
 - https
